@@ -11,7 +11,10 @@ async function startServer() {
   const server = createServer(app);
 
   // Serve static files from the public folder (built frontend)
-  const staticPath = path.resolve(__dirname, "public");
+  // In production, __dirname is the dist folder, so public is next to it
+  const staticPath = process.env.NODE_ENV === "production" 
+    ? path.join(process.cwd(), "dist", "public")
+    : path.resolve(__dirname, "..", "dist", "public");
 
   app.use(express.static(staticPath));
 
